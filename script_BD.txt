@@ -1,0 +1,61 @@
+use concessionaria;
+
+
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema concessionaria
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS concessionaria ;
+
+-- -----------------------------------------------------
+-- Schema concessionaria
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS concessionaria DEFAULT CHARACTER SET utf8 ;
+USE concessionaria ;
+
+-- -----------------------------------------------------
+-- Table `concessionaria`.`Fabricante`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `concessionaria`.`Fabricante` (
+  `fab_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `fab_nome` VARCHAR(100) NULL,
+  PRIMARY KEY (`fab_id`),
+  UNIQUE INDEX `fab_nome_UNIQUE` (`fab_nome` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `concessionaria`.`Modelo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `concessionaria`.`Modelo` (
+  `mod_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `mod_tipo` VARCHAR(100) NULL,
+  PRIMARY KEY (`mod_id`),
+  UNIQUE INDEX `mod_tipo_UNIQUE` (`mod_tipo` ASC))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `concessionaria`.`Carro`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `concessionaria`.`Carro` (
+  `car_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT primary key,
+  `car_nome` VARCHAR(100) NULL,
+  `car_preco` INT NULL,
+   fab_id BIGINT UNSIGNED NOT NULL, 
+   mod_id BIGINT UNSIGNED NOT NULL,
+   foreign key fab_id_fk (fab_id) references fabricante (fab_id)   
+   ON DELETE RESTRICT ON UPDATE CASCADE,
+   foreign key mod_id_fk (mod_id) references modelo (mod_id)
+   ON DELETE RESTRICT ON UPDATE CASCADE
+)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
