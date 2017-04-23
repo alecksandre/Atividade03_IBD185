@@ -1,8 +1,8 @@
 package br.gov.sp.fatec.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.sp.fatec.model.Modelo;
 import br.gov.sp.fatec.repository.ModeloRepository;
@@ -11,7 +11,14 @@ import br.gov.sp.fatec.repository.ModeloRepository;
 public class SegurancaModeloImpl implements SegurancaModelo{
 	
 	@Autowired
-	private ModeloRepository modRepo;
+	ModeloRepository modRepo;
+	
+	/**
+	 * @return the modRepo
+	 */
+	public ModeloRepository getModRepo() {
+		return modRepo;
+	}
 	/**
 	 * @param modRepo the modRepo to set
 	 */
@@ -20,37 +27,17 @@ public class SegurancaModeloImpl implements SegurancaModelo{
 	}
 
 	@Override
-	@Transactional
-	public void insereModelo() {
-		
-		//Cadastrando Modelos
-		Modelo modelo1 = new Modelo();
-		modelo1.setTipo("Popular");
-		modRepo.save(modelo1);
-		
-		Modelo modelo2 = new Modelo();
-		modelo2.setTipo("esportivo");
-		modRepo.save(modelo2);	
+	public Modelo inserir(Modelo modelo) {
+		return modRepo.save(modelo);
 	}
-	
+
 	@Override
-	@Transactional
-	public void deleteModelo() {
-		
-		// Deleta o cadastro Modelo
-		Modelo modelo1 = new Modelo();
-		modelo1.setId((long) 01);
-		modRepo.delete(modelo1);
-		
-		Modelo modelo2 = new Modelo();
-		modelo2.setId((long) 02);
-		modRepo.delete(modelo2);
+	public Modelo buscaId(Long id) {
+		return modRepo.findById(id);
 	}
-	
+
 	@Override
-	@Transactional
-	public void buscaModelo() {
-		// Busca modelo
-		System.out.println("Resultado da busca Modelo: " + modRepo.findByTipo("Popular").getTipo());
+	public Modelo buscaTipo(String nome) {
+		return modRepo.findByTipo(nome);
 	}
 }

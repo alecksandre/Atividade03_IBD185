@@ -1,11 +1,15 @@
 package br.gov.sp.fatec.service;
 
+import java.util.List;
+
+import br.gov.sp.fatec.model.Carro;
+
 public interface SegurancaCarro {
 	
-	public void insereCarro();
+	public Carro inserirCarro(Carro carro);
 	
-	public void deleteCarro();
+	public Carro buscar(String nome);
 	
-	public void buscaCarro();
+	public List<Carro> buscarTodos();
 
 }

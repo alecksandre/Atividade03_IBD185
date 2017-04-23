@@ -1,8 +1,13 @@
 package br.gov.sp.fatec;
 
+import java.util.ArrayList;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import br.gov.sp.fatec.model.Carro;
+import br.gov.sp.fatec.model.Fabricante;
+import br.gov.sp.fatec.model.Modelo;
 import br.gov.sp.fatec.service.SegurancaCarro;
 import br.gov.sp.fatec.service.SegurancaFabricanteService;
 import br.gov.sp.fatec.service.SegurancaModelo;
@@ -21,19 +26,31 @@ public class App {
 		SegurancaModelo mod = (SegurancaModelo) context.getBean("segurancaModelo");
 		SegurancaCarro car = (SegurancaCarro) context.getBean("segurancaCarro");
 		
-		//insere no banco pelo serviço
-		//fab.fabricanteTransacao();
-		//mod.insereModelo();
-		//car.insereCarro();
+		//Insere Fabricante
+		Fabricante fabricante = new Fabricante();
+		fabricante.setNome("Renault");
 		
-		//Busca no banco pelo serviço
-		fab.buscaFabricante();
-		mod.buscaModelo();
-		car.buscaCarro();
+		fab.inserir(fabricante);
 		
-		//deleta do banco pelo serviço
-		//car.deleteCarro();
-		//fab.deleteFabricante();
-		//mod.deleteModelo();
+		//Insere Modelo
+		Modelo modelo = new Modelo();
+		modelo.setTipo("Popular");
+		mod.inserir(modelo);
+
+		//Insere Carro
+		Carro carro = new Carro();
+		carro.setNome("Clio");
+		carro.setPreco(1000000);
+		carro.setFabricante(fabricante);
+		carro.setModelo(modelo);
+		car.inserirCarro(carro);
+		
+		//Consulta Carros
+
+		for (Carro mostra: car.buscarTodos()){
+			System.out.println("Id: " + mostra.getId() + " Nome: "+ carro.getNome() +" Preço: " + carro.getPreco() 
+			+" Fabricante: " + carro.getFabricante().getNome() +" Modelo: "+ carro.getModelo().getTipo());
+		}
+		
    }
 }

@@ -1,63 +1,58 @@
 package br.gov.sp.fatec.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import br.gov.sp.fatec.model.Fabricante;
 import br.gov.sp.fatec.repository.FabricanteRepository;
 
 @Service("segurancaFabricanteService")
 public class SegurancaFabricanteImpl implements SegurancaFabricanteService{
-	
+
 	@Autowired
-	private FabricanteRepository fabricanteRepo;
+	private FabricanteRepository fabRepo;
+	
 	/**
-	 * @param fabricanteRepo the fabricanteRepo to set
+	 * @return the fabRepo
 	 */
-	public void setFabricanteRepo(FabricanteRepository fabricanteRepo) {
-		this.fabricanteRepo = fabricanteRepo;
+	public FabricanteRepository getFabRepo() {
+		return fabRepo;
+	}
+
+	/**
+	 * @param fabRepo the fabRepo to set
+	 */
+	public void setFabRepo(FabricanteRepository fabRepo) {
+		this.fabRepo = fabRepo;
 	}
 
 	@Override
-	@Transactional
-	public void fabricanteTransacao() {
-		Fabricante fabricante1 = new Fabricante();
-		fabricante1.setNome("Renault");
-		fabricanteRepo.save(fabricante1);
-		//
-		Fabricante fabricante2 = new Fabricante();
-		fabricante2.setNome("Lamborghini");
-		fabricanteRepo.save(fabricante2);
-		//
-		Fabricante fabricante3 = new Fabricante();
-		fabricante3.setNome("GM");
-		fabricanteRepo.save(fabricante3);
+	public Fabricante inserir(Fabricante fabricante) {
+		System.out.println(fabricante.getNome());
+		return fabRepo.save(fabricante);
 	}
-		
+
 	@Override
-	@Transactional
-	public void deleteFabricante() {
-		// Delete fabricante
-		
-		Fabricante fabricante1 = new Fabricante();
-		fabricante1.setId((long) 01);
-		fabricanteRepo.delete(fabricante1);
-		//
-		Fabricante fabricante2 = new Fabricante();
-		fabricante2.setId((long) 02);
-		fabricanteRepo.delete(fabricante2);
-		//
-		Fabricante fabricante3 = new Fabricante();
-		fabricante3.setId((long) 03);
-		fabricanteRepo.delete(fabricante3);
+	public Fabricante buscarFabricante(String nome) {
+		return fabRepo.findByNome(nome);
 	}
-	
+
 	@Override
-	@Transactional
-	public void buscaFabricante() {
-		// busca fabricante
-		System.out.println("Resultado da busca Fabricante: " + fabricanteRepo.findByNome("Renault").getNome());
+	public Fabricante buscarId(Long id) {
+		return fabRepo.findById(id);
+	}
+
+	@Override
+	public List<Fabricante> buscarTodos() {
+		List<Fabricante> busca = new ArrayList<Fabricante>();
+		for(Fabricante fabricante: fabRepo.findAll()){
+			busca.add(fabricante);
+		}
 		
+		return busca;
 	}
 }

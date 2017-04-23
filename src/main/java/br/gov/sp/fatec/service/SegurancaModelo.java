@@ -1,10 +1,13 @@
 package br.gov.sp.fatec.service;
 
+import br.gov.sp.fatec.model.Modelo;
+
 public interface SegurancaModelo {
 	
-	public void insereModelo();
+	public Modelo inserir(Modelo modelo);
 	
-	public void deleteModelo();
+	public Modelo buscaId(Long id);
 	
-	public void buscaModelo();
+	public Modelo buscaTipo(String nome);
+	
 }

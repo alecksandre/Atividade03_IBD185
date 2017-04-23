@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
@@ -15,10 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.sp.fatec.model.Carro;
 import br.gov.sp.fatec.model.Fabricante;
+import br.gov.sp.fatec.model.Modelo;
 import br.gov.sp.fatec.repository.CarroRepository;
 import br.gov.sp.fatec.repository.FabricanteRepository;
 import br.gov.sp.fatec.repository.ModeloRepository;
 import br.gov.sp.fatec.service.SegurancaCarro;
+import br.gov.sp.fatec.service.SegurancaModelo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/applicationContext.xml" })
@@ -26,25 +26,28 @@ import br.gov.sp.fatec.service.SegurancaCarro;
 @Transactional
 public class FabricanteRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests{
 	
+	
 	@Autowired
 	private FabricanteRepository fabricanteRepo;
+	
 	@Autowired
-	private ModeloRepository modeloRepo;
+	private SegurancaModelo modService;
+	
 	@Autowired
-	private CarroRepository carroRepo;
+	private SegurancaCarro carService;
 	
 	public void setFabricanteRepo(FabricanteRepository fabricanteRepo) {
 		this.fabricanteRepo = fabricanteRepo;
 	}
 	
-	public void setModeloRepo(ModeloRepository modeloRepo) {
-		this.modeloRepo = modeloRepo;
+	public void setModService(SegurancaModelo modService){
+		this.modService = modService;
 	}
 	
-	public void setCarroRepo(CarroRepository carroRepo) {
-		this.carroRepo = carroRepo;
+	public void setCarService(SegurancaCarro carService) {
+		this.carService = carService;
 	}
-	
+
 	@Test
 	public void testeInsercaoFabricanteOk(){
 		Fabricante fabricante  = new Fabricante();
@@ -59,27 +62,31 @@ public class FabricanteRepositoryTest extends AbstractTransactionalJUnit4SpringC
 		assertTrue(fabricante.getId() == null);
 	}
 	
-	//teste o serviço
+	//testa pelo serviço
+	
+	public void testeModeloInsereOK(){
+		
+		Modelo modelo = new Modelo();
+		modelo.setTipo("Popular");
+		modService.inserir(modelo);
+		assertTrue(modelo.getId() != null);
+	}
+	
 	@Test
 	public void testeInsercaoCarroOk(){
-		// Carregando o arquivo ApplicationContext
-		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		//insere no banco pelo serviço
-		SegurancaCarro car = (SegurancaCarro) context.getBean("segurancaCarro");
-		car.insereCarro();
-		//
+		
+		Fabricante fabricante  = new Fabricante();
+		Modelo modelo = new Modelo();
+		fabricante.setId((long) 01);
+		modelo.setId((long) 01);
+		
 		Carro carro = new Carro();
 		carro.setNome("Clio");
-		assertTrue(carro.getNome() == "Clio");
+		carro.setPreco(1000000);
+		carro.setFabricante(fabricante);
+		carro.setModelo(modelo);
+		carService.inserirCarro(carro);
+		
+		assertTrue(fabricante.getId() != null);
 	}
-	
-	@Test
-	public void testeDelecaoCarroOk(){
-		Carro carro = new Carro();
-		carro.setId((long) 01);;
-		carroRepo.delete(carro);
-		assertTrue(carro.getId()!=null);
-	}
-
-	
 }

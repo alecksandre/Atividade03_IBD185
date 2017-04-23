@@ -1,11 +1,18 @@
 package br.gov.sp.fatec.service;
 
+import java.util.List;
+
+import br.gov.sp.fatec.model.Fabricante;
+
 public interface SegurancaFabricanteService {
 	
-	public void fabricanteTransacao();
+	public Fabricante inserir(Fabricante fabricante);
 	
-	public void deleteFabricante();
+	public Fabricante buscarFabricante(String nome);
 	
-	public void buscaFabricante();
+	public Fabricante buscarId(Long id);
+	
+	public List<Fabricante> buscarTodos();
+	
 	
 }
